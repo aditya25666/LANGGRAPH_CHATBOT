@@ -7,7 +7,8 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 
 from langgraph.graph import StateGraph, START, END
 from langgraph.graph.message import add_messages
-from langgraph.checkpoint.memory import MemorySaver
+import sqlite3
+from langgraph.checkpoint.sqlite import SqliteSaver
 
 
 # ----------------------------
@@ -54,7 +55,12 @@ def chatbot(state: ChatState):
 # Memory
 # ----------------------------
 
-memory = MemorySaver()
+conn = sqlite3.connect(
+    "chat.db",
+    check_same_thread=False
+)
+
+memory = SqliteSaver(conn)
 
 
 # ----------------------------
